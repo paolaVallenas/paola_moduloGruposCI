@@ -18,8 +18,9 @@ class EsAdmin
     {
         if (Auth::user()->tipoUsuario === 'admin') {
             return $next($request);
-        }else{
-        return redirect()->route('DUsuario');}
-        
+        } else {
+            return redirect()->route('DUsuario');
+        }
+
     }
 }

@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estudiante;
 use App\Models\Formulario;
 use App\Models\Grupo;
-use App\Models\Estudiante;
 use App\Models\Matricula;
 use App\Models\Pago;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Inertia\Inertia;
-use App\Models\User;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 
 class FormularioController extends Controller
 {
@@ -24,6 +24,7 @@ class FormularioController extends Controller
     public function index()
     {
         $formularios = Formulario::paginate(10);
+
         return Inertia::render('Administrador/Formulario/Index', ['ListaFormularios' => $formularios]);
     }
 
@@ -73,11 +74,11 @@ class FormularioController extends Controller
         try {
             // Ensure estado is set to 'Pendiente' before creating
             $data['estado'] = 'Pendiente';
-            
+
             // Antes de crear el formulario, obtén los datos adicionales necesarios
             $grupo = Grupo::with(['ciclo.idioma'])->find($data['horarioIngles']);
             if ($grupo) {
-                $data['cicloIngles'] = $grupo->ciclo->nombre . ' - ' . $grupo->ciclo->idioma->nombre. ' - ' .$grupo->ciclo->nivel;
+                $data['cicloIngles'] = $grupo->ciclo->nombre.' - '.$grupo->ciclo->idioma->nombre.' - '.$grupo->ciclo->nivel;
                 $data['horarioIngles'] = $grupo->horario;
             }
 
@@ -85,13 +86,15 @@ class FormularioController extends Controller
                 $path = $request->file('imgComprobante')->store('images', 'public');
                 $data['imgComprobante'] = Storage::url($path);
             }
-            //dd($data);
+            // dd($data);
             Formulario::create($data);
+
             return redirect('/')->with('message', 'Formulario registrado correctamente');
         } catch (\Exception $e) {
             // Esto te ayudará a capturar el error
-            Log::error('Error al guardar el formulario: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error al guardar el formulario: ' . $e->getMessage());
+            Log::error('Error al guardar el formulario: '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Error al guardar el formulario: '.$e->getMessage());
         }
     }
 
@@ -139,12 +142,12 @@ class FormularioController extends Controller
                 })
                 ->first();
 
-            if (!$grupo) {
+            if (! $grupo) {
                 throw new \Exception('No se encontró el grupo correspondiente');
             }
 
             // Verificar si hay vacantes disponibles
-            if (!$grupo->tieneVacantes()) {
+            if (! $grupo->tieneVacantes()) {
                 throw new \Exception('No hay vacantes disponibles en este grupo');
             }
 
@@ -153,7 +156,7 @@ class FormularioController extends Controller
 
             // Crear usuario
             $user = User::create([
-                'name' => $formulario->nombres . ' ' . $formulario->aPaterno . ' ' . $formulario->aMaterno,
+                'name' => $formulario->nombres.' '.$formulario->aPaterno.' '.$formulario->aMaterno,
                 'email' => $email,
                 'password' => Hash::make($formulario->dni),
                 'tipoUsuario' => 'est',
@@ -172,7 +175,7 @@ class FormularioController extends Controller
                 'email' => $formulario->email ?? $email,
                 'emailInstitucional' => $this->getInstitutionalEmail($formulario),
                 'programaEstudios' => $formulario->programaEstudios,
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             // Verificar si el estudiante ya está matriculado en el grupo
@@ -186,7 +189,7 @@ class FormularioController extends Controller
                 'monto' => $formulario->montoPago,
                 'medioPago' => $formulario->medioPago,
                 'nroComprobante' => $formulario->nroComprobante,
-                'imgComprobante' => $formulario->imgComprobante
+                'imgComprobante' => $formulario->imgComprobante,
             ]);
 
             // Crear matrícula
@@ -196,7 +199,7 @@ class FormularioController extends Controller
                 'estado' => 'vigente',
                 'estudiante_id' => $estudiante->id,
                 'grupo_id' => $grupo->id,
-                'pago_id' => $pago->id
+                'pago_id' => $pago->id,
             ]);
 
             // Incrementar el número de estudiantes y reducir vacantes
@@ -208,11 +211,12 @@ class FormularioController extends Controller
 
             return redirect()->back()->with([
                 'message' => 'Estudiante, matrícula y pago registrados correctamente',
-                'formularioId' => $formulario->id
+                'formularioId' => $formulario->id,
             ]);
         } catch (\Exception $e) {
-            Log::error('Error al registrar estudiante y matrícula: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error al procesar la solicitud: ' . $e->getMessage());
+            Log::error('Error al registrar estudiante y matrícula: '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Error al procesar la solicitud: '.$e->getMessage());
         }
     }
 
@@ -222,14 +226,14 @@ class FormularioController extends Controller
         if ($formulario->tipoAlumno === 'alumno') {
             return $formulario->correoInstitucional;
         }
-        
+
         // Si es egresado con correo institucional
         if ($formulario->tipoAlumno === 'egresado' && $formulario->correoInstitucional) {
             return $formulario->correoInstitucional;
         }
 
         // Si es egresado sin correo institucional o no es alumno del instituto
-        return 'cid' . $formulario->dni . '@istta.edu.pe';
+        return 'cid'.$formulario->dni.'@istta.edu.pe';
     }
 
     private function getInstitutionalEmail($formulario)
@@ -240,7 +244,7 @@ class FormularioController extends Controller
         }
 
         // Para egresados sin correo institucional y no alumnos
-        return 'cid' . $formulario->dni . '@istta.edu.pe';
+        return 'cid'.$formulario->dni.'@istta.edu.pe';
     }
 
     public function rechazar(string $id)
@@ -248,10 +252,12 @@ class FormularioController extends Controller
         try {
             $formulario = Formulario::findOrFail($id);
             $formulario->delete();
+
             return redirect()->back()->with('message', 'Formulario rechazado y eliminado correctamente');
         } catch (\Exception $e) {
-            Log::error('Error al eliminar el formulario: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error al eliminar el formulario: ' . $e->getMessage());
+            Log::error('Error al eliminar el formulario: '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Error al eliminar el formulario: '.$e->getMessage());
         }
     }
 }

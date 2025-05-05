@@ -9,7 +9,8 @@ class Estudiante extends Model
 {
     /** @use HasFactory<\Database\Factories\EstudianteFactory> */
     use HasFactory;
-    protected $fillable=[
+
+    protected $fillable = [
         'nombres',
         'aPaterno',
         'aMaterno',
@@ -19,7 +20,7 @@ class Estudiante extends Model
         'email',
         'emailInstitucional',
         'programaEstudios',
-        'user_id'
+        'user_id',
     ];
 
     public function user()

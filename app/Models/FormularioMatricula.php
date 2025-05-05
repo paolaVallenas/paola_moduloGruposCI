@@ -9,7 +9,7 @@ class FormularioMatricula extends Model
 {
     /** @use HasFactory<\Database\Factories\FormularioMatriculaFactory> */
     use HasFactory;
-   
+
     protected $fillable = [
         'fechaMatricula',
         'cicloIngles',
@@ -22,6 +22,7 @@ class FormularioMatricula extends Model
         'estudiante_id',
         'estado',
     ];
+
     public function estudiante()
     {
         return $this->belongsTo(Estudiante::class);

@@ -52,14 +52,11 @@ class User extends Authenticatable
 
     /**
      * Get the docente associated with the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function docente(): HasOne
     {
         return $this->hasOne(Docente::class, 'user_id', 'id');
     }
-
 
     public function estudiante()
     {

@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Ciclo;
 use App\Models\Docente;
 use App\Models\Grupo;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Log;
-use Barryvdh\DomPDF\Facade\Pdf;  // Corregir el import del PDF
+use Inertia\Inertia;  // Corregir el import del PDF
 
 class GrupoController extends Controller
 {
@@ -56,6 +56,7 @@ class GrupoController extends Controller
         return redirect()->route('grupo.index')
             ->with('success', 'Grupo creado exitosamente.');
     }
+
     /**
      * Display the specified resource.
      */
@@ -104,20 +105,21 @@ class GrupoController extends Controller
     {
         try {
             $grupo = Grupo::with(['estudiantes', 'docente', 'ciclo.idioma'])->findOrFail($grupoId);
-            
+
             // Verificar que el grupo existe y tiene la información necesaria
-            if (!$grupo || !$grupo->docente || !$grupo->ciclo || !$grupo->ciclo->idioma) {
+            if (! $grupo || ! $grupo->docente || ! $grupo->ciclo || ! $grupo->ciclo->idioma) {
                 return back()->with('error', 'No se encontró toda la información necesaria para generar el reporte.');
             }
 
             $pdf = PDF::loadView('reportes.estudiantes-grupo', [
                 'grupo' => $grupo,
-                'estudiantes' => $grupo->estudiantes
+                'estudiantes' => $grupo->estudiantes,
             ]);
 
             return $pdf->download("reporte-grupo-{$grupoId}.pdf");
         } catch (\Exception $e) {
-            Log::error('Error al generar el reporte: ' . $e->getMessage());
+            Log::error('Error al generar el reporte: '.$e->getMessage());
+
             return back()->with('error', 'Ocurrió un error al generar el reporte.');
         }
     }

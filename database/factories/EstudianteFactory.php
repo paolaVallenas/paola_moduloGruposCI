@@ -24,7 +24,7 @@ class EstudianteFactory extends Factory
             'sexo' => $this->faker->randomElement(['masculino', 'femenino']), // Sexo: 'masculino' o 'femenino'
             'celular' => $this->faker->phoneNumber(), // Número de celular
             'email' => $this->faker->email(), // Email
-            'emailInstitucional' => strtolower($this->faker->firstName() . '.' . $this->faker->lastName()) . '@istta.edu.pe', // Correo institucional en minúsculas
+            'emailInstitucional' => strtolower($this->faker->firstName().'.'.$this->faker->lastName()).'@istta.edu.pe', // Correo institucional en minúsculas
             'programaEstudios' => $this->faker->randomElement(['DSi', 'T.E', 'Electronica E', 'Contabilidad', 'Turismo', 'Mecanica', 'Mecatronica']), // Programa de estudios
             'user_id' => 1, // Asignar siempre el valor 1
             'created_at' => $this->faker->dateTimeBetween('2020-01-01', '2024-12-31'),
