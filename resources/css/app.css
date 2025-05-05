@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.welcome-container {
+    text-align: center;
+    /* Centrar el título */
+    /*margin-top: 20px;*/
+    /* Margen superior para simular un navbar */
+}
+
+
+.welcome-container {
+    text-align: center;
+    /* Centrar el título */
+}
+
+.triptico-container {
+    display: flex;
+    /* Usar flexbox para alinear en una fila */
+    justify-content: space-between;
+    /* Espacio entre las secciones */
+    margin-top: 20px;
+    /* Espacio entre el título y las secciones */
+}
+
+.triptico-section {
+    flex: 1;
+    /* Cada sección toma el mismo espacio */
+    margin: 0 10px;
+    /* Margen horizontal entre secciones */
+    border: 2px solid #800000;
+    /* Borde granate */
+    border-radius: 15px;
+    /* Bordes curvados */
+    padding: 20px;
+    /* Espacio interno */
+    background-color: #ffffff;
+    /* Fondo blanco */
+}
+
+.triptico-section input {
+    border: 2px solid #800000;
+    /* Borde de los inputs */
+    border-radius: 5px;
+    /* Bordes curvados en los inputs */
+    width: 100%;
+    /* Ancho completo */
+    padding: 10px;
+    /* Espacio interno en los inputs */
+}
+
+/* Cambiar el color del borde al hacer foco */
+.triptico-section input:focus {
+    border-color: #ff0000;
+    /* Cambiar a rojo al hacer foco */
+}
+
+/* Estilo del título en el medio */
+h2 {
+    margin-bottom: 20px;
+    /* Espacio inferior del título */
+}
+
+h1 {
+    margin-bottom: 20px; /* Espacio inferior del título */
+    font-size: 2.5em; /* Ajusta el tamaño según lo desees (puedes usar px o rem también) */
+    color: #800000; /* Este es un código de color granate */
+}
+
+
+/* Estilo para los inputs */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    border: 2px solid #ccc;
+    /* Color de borde por defecto (gris claro) */
+    padding: 10px;
+    border-radius: 5px;
+    /* Bordes redondeados */
+    width: 100%;
+    /* Ocupa todo el ancho disponible */
+    transition: border-color 0.3s;
+    /* Transición suave para el cambio de color */
+}
+
+/* Cambiar el color del borde al hacer foco */
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus {
+    border-color: #8B0000;
+    /* Color de borde granate al hacer foco */
+}
+
+/* Estilos generales del botón */
+button[type="submit"] {
+    background-color: #800000; /* Granate */
+    color: white; /* Color del texto */
+    padding: 12px 20px; /* Relleno interno */
+    border: none; /* Sin borde */
+    border-radius: 8px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de la fuente */
+    font-weight: bold; /* Negrita */
+    cursor: pointer; /* Cambia el cursor a mano */
+    transition: background-color 0.3s, transform 0.2s; /* Animación al pasar el ratón */
+}
+
+/* Efecto al pasar el ratón (hover) */
+button[type="submit"]:hover {
+    background-color: #b30000; /* Color más oscuro de granate */
+    transform: scale(1.05); /* Agrandar ligeramente el botón */
+}
+
+/* Efecto de enfoque (focus) */
+button[type="submit"]:focus {
+    outline: none; /* Elimina el contorno predeterminado */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Agrega sombra alrededor */
+}
+
+/* Efecto al presionar (active) */
+button[type="submit"]:active {
+    background-color: #660000; /* Color aún más oscuro */
+}
+
