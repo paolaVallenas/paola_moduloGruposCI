@@ -7,7 +7,7 @@ export default function Dashboard() {
         <AuthenticatedLayout
         header={
             <h2 className="text-3xl font-bold leading-tight text-white bg-gradient-to-r from-[#800020] to-[#6A4E3C] p-4 rounded-lg shadow-lg text-center">
-                ¡ Bienvenido Administrador ! 
+                ¡ Bienvenido Administrador Roy Carrillo ! 
             </h2>
         }
         >
