@@ -24,7 +24,7 @@ class DocenteFactory extends Factory
             'dni' => $this->faker->numerify('#########'), // DNI (9 dígitos)
             'celular' => $this->faker->phoneNumber(), // Número de celular
             'fechaNacimiento' => $this->faker->date('Y-m-d', '2000-01-01'), // Fecha de nacimiento
-            'emailInstitucional' => strtolower($this->faker->firstName() . '.' . $this->faker->lastName()) . '@istta.edu.pe', // Correo institucional
+            'emailInstitucional' => strtolower($this->faker->firstName().'.'.$this->faker->lastName()).'@istta.edu.pe', // Correo institucional
             'fotoDocente' => $this->faker->imageUrl(200, 200, 'people'), // Foto
             'user_id' => 1, // Asignar siempre el valor 1
             'created_at' => $this->faker->dateTimeBetween('2024-01-01', '2024-12-01'), // Fecha de creación aleatoria

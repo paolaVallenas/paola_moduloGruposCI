@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Formulario;
-use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EstadisticasController extends Controller
 {
@@ -18,7 +18,7 @@ class EstadisticasController extends Controller
         // Obtener los datos de tipos de alumnos y medios publicitarios
         $tiposAlumnos = $this->getEstadisticas($month, $year, 'tipoAlumno');
         $medioPublicitario = $this->getEstadisticas($month, $year, 'medioPublicitario');
-        
+
         // Se obtiene toda la data de formularios (si es necesario para la vista)
         $datos = Formulario::all();
 
@@ -28,7 +28,7 @@ class EstadisticasController extends Controller
             'tiposAlumnos' => $tiposAlumnos,
             'medioPublicitario' => $medioPublicitario,
             'month' => $month, // Para mostrar el mes en el frontend
-            'year' => $year   // Para mostrar el año en el frontend
+            'year' => $year,   // Para mostrar el año en el frontend
         ]);
     }
 
@@ -41,20 +41,22 @@ class EstadisticasController extends Controller
             'year' => 'required|integer|digits:4',       // Año debe tener 4 dígitos
             'type' => 'required|in:tiposAlumnos,medioPublicitario', // Validación del tipo
         ]);
-    
+
         $month = $validated['month'];  // Mes (número entre 1 y 12)
         $year = $validated['year'];    // Año (formato YYYY)
         $type = $validated['type'];    // Tipo de estadística
-    
+
         // Filtrar según el tipo solicitado
         if ($type === 'tiposAlumnos') {
             $tiposAlumnos = $this->getEstadisticas($month, $year, 'tipoAlumno');
+
             return response()->json(['tiposAlumnos' => $tiposAlumnos, 'month' => $month, 'year' => $year]);
         } elseif ($type === 'medioPublicitario') {
             $medioPublicitario = $this->getEstadisticas($month, $year, 'medioPublicitario');
+
             return response()->json(['medioPublicitario' => $medioPublicitario, 'month' => $month, 'year' => $year]);
         }
-    
+
         // Si el tipo no es válido, retornar un error
         return response()->json(['error' => 'Tipo no válido'], 400);
     }

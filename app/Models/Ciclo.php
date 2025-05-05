@@ -9,11 +9,13 @@ class Ciclo extends Model
 {
     /** @use HasFactory<\Database\Factories\CicloFactory> */
     use HasFactory;
+
     protected $fillable = [
         'idioma_id',
         'nombre',
-        'nivel'
+        'nivel',
     ];
+
     public function idioma()
     {
         return $this->belongsTo(Idioma::class);

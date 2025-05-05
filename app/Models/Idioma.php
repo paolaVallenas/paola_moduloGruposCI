@@ -9,7 +9,8 @@ class Idioma extends Model
 {
     /** @use HasFactory<\Database\Factories\IdiomaFactory> */
     use HasFactory;
-    protected $fillable =[
+
+    protected $fillable = [
         'nombre',
         'montoMes',
         'nivelCert',

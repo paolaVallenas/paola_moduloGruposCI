@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Certificado;
-use App\Models\Estudiante;
 use App\Models\FormularioMatricula;
 use App\Models\Grupo;
 use App\Models\Matricula;
@@ -13,8 +12,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Inertia\Inertia;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class FuncionAdminController extends Controller
@@ -25,6 +24,7 @@ class FuncionAdminController extends Controller
 
         return Inertia::render('Administrador/Usuarios/Index', ['usuarios' => $usuarios]);
     }
+
     public function dataCert()
     {
         $estudiantes = Matricula::with(['estudiante', 'grupo.ciclo.idioma'])
@@ -37,12 +37,14 @@ class FuncionAdminController extends Controller
             })
             ->paginate(15);
         $certificados = Certificado::paginate(15);
+
         // Retornar los datos en formato JSON
         return response()->json([
             'estudiantes' => $estudiantes,
-            'certificados' => $certificados
+            'certificados' => $certificados,
         ]);
     }
+
     public function inicioCert()
     {
         $estudiantes = Matricula::with(['estudiante', 'grupo.ciclo.idioma'])
@@ -55,10 +57,9 @@ class FuncionAdminController extends Controller
             })
             ->paginate(15);
         $certificados = Certificado::paginate(15);
-        return Inertia::render('Administrador/Certificaciones/Index', ['estudiantes' => $estudiantes,'certificados'=>$certificados]);
+
+        return Inertia::render('Administrador/Certificaciones/Index', ['estudiantes' => $estudiantes, 'certificados' => $certificados]);
     }
-
-
 
     public function generarCertificado(Request $request)
     {
@@ -73,6 +74,7 @@ class FuncionAdminController extends Controller
 
         $matricula->estado = 'certificado';
         $matricula->save();
+
         return redirect()->route('usuarios.index');
     }
 
@@ -101,7 +103,7 @@ class FuncionAdminController extends Controller
                 })
                 ->first();
 
-            if (!$grupo) {
+            if (! $grupo) {
                 throw new \Exception('No se encontró el grupo correspondiente');
             }
             // Create pago
@@ -110,7 +112,7 @@ class FuncionAdminController extends Controller
                 'monto' => $formulario->montoPago,
                 'medioPago' => $formulario->medioPago,
                 'nroComprobante' => $formulario->nroComprobante,
-                'imgComprobante' => $formulario->imgComprobante
+                'imgComprobante' => $formulario->imgComprobante,
             ]);
 
             // Crear matricula
@@ -120,9 +122,8 @@ class FuncionAdminController extends Controller
                 'estado' => 'vigente',
                 'estudiante_id' => $formulario->estudiante_id,
                 'grupo_id' => $grupo->id,
-                'pago_id' => $pago->id
+                'pago_id' => $pago->id,
             ]);
-
 
             // Actualizar el estado del formulario_matricula
             $formulario->estado = 'aceptado';
@@ -130,13 +131,15 @@ class FuncionAdminController extends Controller
 
             return redirect()->back()->with([
                 'message' => 'Matrícula y pago registrados correctamente',
-                'formularioId' => $formulario->id
+                'formularioId' => $formulario->id,
             ]);
         } catch (\Exception $e) {
-            Log::error('Error al registrar matrícula y pago: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error al procesar la solicitud: ' . $e->getMessage());
+            Log::error('Error al registrar matrícula y pago: '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Error al procesar la solicitud: '.$e->getMessage());
         }
     }
+
     public function rechazar(Request $request)
     {
         try {
@@ -144,21 +147,23 @@ class FuncionAdminController extends Controller
             // Eliminar el archivo de imagen asociado si existe
             if ($formulario->imgComprobante) {
                 // Obtener la ruta completa del archivo
-                $filePath = str_replace(config('app.url') . '/storage/', '', $formulario->imgComprobante);
+                $filePath = str_replace(config('app.url').'/storage/', '', $formulario->imgComprobante);
 
                 // Eliminar el archivo de storage
-                if (Storage::exists('public/' . $filePath)) {
-                    Storage::delete('public/' . $filePath);
+                if (Storage::exists('public/'.$filePath)) {
+                    Storage::delete('public/'.$filePath);
                 }
             }
             // Elimina el formulario
             $formulario->delete();
+
             return redirect()->back()->with([
                 'message' => 'Formulario eliminado',
             ]);
         } catch (\Exception $e) {
-            Log::error('Error al eliminar formulario' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error al procesar la solicitud: ' . $e->getMessage());
+            Log::error('Error al eliminar formulario'.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Error al procesar la solicitud: '.$e->getMessage());
         }
     }
 }

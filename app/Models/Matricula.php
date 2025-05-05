@@ -11,7 +11,7 @@ class Matricula extends Model
     use HasFactory;
 
     protected $table = 'matriculas';
-    
+
     protected $fillable = [
         'fecha',
         'nota',
@@ -29,13 +29,14 @@ class Matricula extends Model
     {
         return $this->belongsTo(Estudiante::class);
     }
+
     public function grupo()
     {
         return $this->belongsTo(Grupo::class);
     }
+
     public function pago()
     {
         return $this->belongsTo(Pago::class);
     }
-    
 }

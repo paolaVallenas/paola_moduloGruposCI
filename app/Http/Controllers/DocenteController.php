@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Docente;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class DocenteController extends Controller
 {
@@ -53,7 +53,7 @@ class DocenteController extends Controller
                 'fechaNacimiento.required' => 'La fecha de nacimiento es obligatoria',
                 'fotoDocente.image' => 'El archivo debe ser una imagen',
                 'fotoDocente.mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg',
-                'fotoDocente.max' => 'El tamaño máximo de la imagen es de 2MB'
+                'fotoDocente.max' => 'El tamaño máximo de la imagen es de 2MB',
             ]
         );
 
@@ -65,7 +65,7 @@ class DocenteController extends Controller
 
             // Crear usuario primero
             $user = User::create([
-                'name' => $validated['nombres'] . ' ' . $validated['aPaterno'] . ' ' . $validated['aMaterno'],
+                'name' => $validated['nombres'].' '.$validated['aPaterno'].' '.$validated['aMaterno'],
                 'email' => $validated['emailInstitucional'],
                 'password' => bcrypt($validated['dni']),
                 'tipoUsuario' => 'doc',
@@ -111,10 +111,10 @@ class DocenteController extends Controller
             'aPaterno' => 'required|string|max:255',
             'aMaterno' => 'required|string|max:255',
             'sexo' => 'required|in:MASCULINO,FEMENINO',
-            'dni' => 'required|string|size:8|unique:docentes,dni,' . $id,
+            'dni' => 'required|string|size:8|unique:docentes,dni,'.$id,
             'celular' => 'required|string|size:9',
             'fechaNacimiento' => 'required|date',
-            'emailInstitucional' => 'required|email|unique:docentes,emailInstitucional,' . $id,
+            'emailInstitucional' => 'required|email|unique:docentes,emailInstitucional,'.$id,
             'fotoDocente' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 

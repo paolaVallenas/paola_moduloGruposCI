@@ -24,7 +24,7 @@ class MatriculaFactory extends Factory
             'grupo_id' => $faker->numberBetween(1, 10), // ID aleatorio del grupo
             'pago_id' => $faker->numberBetween(1, 10), // ID aleatorio de pago
             'created_at' => $this->faker->dateTimeBetween('2020-01-01', '2024-12-31'),
-'updated_at' => $this->faker->dateTimeBetween('2020-01-01', '2024-12-31'),
+            'updated_at' => $this->faker->dateTimeBetween('2020-01-01', '2024-12-31'),
 
         ];
     }

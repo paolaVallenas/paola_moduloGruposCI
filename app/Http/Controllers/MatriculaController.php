@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Formulario;
 use App\Models\FormularioMatricula;
 use App\Models\Matricula;
-use App\Models\Pago;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -19,12 +18,13 @@ class MatriculaController extends Controller
         $formularios = Formulario::paginate(10);
         $matriculas = Matricula::with(['grupo.ciclo.idioma', 'estudiante', 'pago'])->paginate(15);
         $formMatriculas = FormularioMatricula::with('estudiante')->paginate(15);
+
         return Inertia::render(
             'Administrador/Matricula/Index',
             [
                 'ListaMatriculas' => $matriculas,
                 'ListaFormulariosMatricula' => $formMatriculas,
-                'ListaFormularios' => $formularios
+                'ListaFormularios' => $formularios,
             ]
         );
     }

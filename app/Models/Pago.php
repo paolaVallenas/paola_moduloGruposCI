@@ -9,12 +9,12 @@ class Pago extends Model
 {
     /** @use HasFactory<\Database\Factories\PagoFactory> */
     use HasFactory;
-    protected $fillable=[
+
+    protected $fillable = [
         'fecha',
         'nroComprobante',
         'monto',
         'medioPago',
         'imgComprobante',
     ];
-    
 }

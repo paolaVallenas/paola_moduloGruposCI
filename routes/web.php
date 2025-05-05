@@ -2,23 +2,21 @@
 
 use App\Http\Controllers\CicloController;
 use App\Http\Controllers\DocenteController;
+use App\Http\Controllers\EstadisticasController;
 use App\Http\Controllers\FormularioController;
+use App\Http\Controllers\FuncionAdminController;
 use App\Http\Controllers\FuncionDocenteController;
 use App\Http\Controllers\FuncionEstudianteController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\IdiomaController;
 use App\Http\Controllers\MatriculaController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\EstadisticasController;
-use App\Http\Controllers\FuncionAdminController;
-use App\Models\Ciclo;
 use App\Models\Grupo;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-//Pagina de Inicio
+// Pagina de Inicio
 Route::get('/', function () {
     $grupos = Grupo::with(['ciclo.idioma', 'docente'])->get();
 
@@ -28,14 +26,13 @@ Route::get('/', function () {
     ]);
 });
 
-
 Route::post('/formulario', [FormularioController::class, 'store'])->name('formulario.store');
-//Para Todos los Usuarios
-//verifica que sea un usuario
+// Para Todos los Usuarios
+// verifica que sea un usuario
 Route::get('/inicio', function () {
     return Inertia::render('Auth/Login');
 })->middleware(['auth', 'verified', 'InterfazUsuario'])->name('dashboard');
-//verifica el tipo de usuario
+// verifica el tipo de usuario
 Route::get('/dashboard', function () {
     $rol = Auth::user()->tipoUsuario;
     if ($rol === 'admin') {
@@ -52,10 +49,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-//verificar certificados
+// verificar certificados
 Route::get('/verificar-certificado/{codigo}', [FuncionEstudianteController::class, 'verificar'])->name('verificar.certificado');
 
-//Para Administrador
+// Para Administrador
 Route::middleware('EsAdmin')->group(function () {
     Route::get('/formulario', [FormularioController::class, 'index'])->name('formulario.index');
     Route::resource('idioma', IdiomaController::class);
@@ -69,8 +66,9 @@ Route::middleware('EsAdmin')->group(function () {
     Route::post('/formularios/{id}/rechazar', [FormularioController::class, 'rechazar'])->name('formularios.rechazar');
     Route::get('/gestionestudiantesgrupo', function () {
         $grupos = App\Models\Grupo::with(['estudiantes', 'docente', 'ciclo.idioma'])->get();
+
         return Inertia::render('Administrador/Grupos/GestionEstudiantesGrupo', [
-            'grupos' => $grupos
+            'grupos' => $grupos,
         ]);
     })->name('gestion.estudiantes.grupo');
 
@@ -89,18 +87,14 @@ Route::middleware('EsAdmin')->group(function () {
     Route::get('/mostrarQR/{id}', [FuncionAdminController::class, 'mostrarCertificado'])->name('mostrar.certificado');
 });
 
-
-
-
-//Para Estudiante
+// Para Estudiante
 Route::middleware('EsEstudiante')->group(function () {
     Route::get('estudiante', [FuncionEstudianteController::class, 'registrar'])->name('estudiante.registrar');
     Route::get('estudiante/ver', [FuncionEstudianteController::class, 'ver'])->name('estudiante.ver');
     Route::post('estudiante/enviar', [FuncionEstudianteController::class, 'enviar'])->name('estudiante.enviar');
 });
 
-
-//Para Docente
+// Para Docente
 Route::middleware('EsDocente')->group(function () {
     Route::get('docentes', [FuncionDocenteController::class, 'verGrupos'])->name('docentes.verGrupos');
     Route::post('/docentes/guardar-nota', [FuncionDocenteController::class, 'guardarNota'])->name('docente.guardar-nota');
@@ -109,4 +103,4 @@ Route::middleware('EsDocente')->group(function () {
     Route::get('/docentes/asistencias', [FuncionDocenteController::class, 'registrarAsistencias'])->name('docentes.registrarAsistencias');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

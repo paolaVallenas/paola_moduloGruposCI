@@ -14,6 +14,7 @@ class IdiomaController extends Controller
     public function index()
     {
         $idiomas = Idioma::all();
+
         return Inertia::render('Administrador/Idiomas/Index', ['Listaidiomas' => $idiomas]);
     }
 
@@ -47,7 +48,7 @@ class IdiomaController extends Controller
 
         // Redirigir al usuario con un mensaje de éxito
         return redirect()->route('ciclo.index')->with(
-            'message' ,'Idioma creado exitosamente'
+            'message', 'Idioma creado exitosamente'
         );
     }
 

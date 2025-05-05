@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Certificado extends Model
 {
-    protected $fillable=[
+    protected $fillable = [
         'nombre',
         'codigo',
         'cicloCert',
     ];
-    
 }

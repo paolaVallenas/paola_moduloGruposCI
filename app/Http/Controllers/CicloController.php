@@ -16,7 +16,8 @@ class CicloController extends Controller
     {
         $ciclos = Ciclo::with('idioma')->paginate(10);
         $idiomas = Idioma::all();
-        return Inertia::render('Administrador/Ciclos/Index', ['ListaCiclos' => $ciclos, 'ListaIdiomas' => $idiomas,]);
+
+        return Inertia::render('Administrador/Ciclos/Index', ['ListaCiclos' => $ciclos, 'ListaIdiomas' => $idiomas]);
     }
 
     /**
@@ -35,7 +36,7 @@ class CicloController extends Controller
 
         // Validar la solicitud
         $request->validate([
-            'nombre' => 'required|string|max:20|unique:ciclos,nombre,NULL,id,idioma_id,' . $request->idioma_id . ',nivel,' . $request->nivel,
+            'nombre' => 'required|string|max:20|unique:ciclos,nombre,NULL,id,idioma_id,'.$request->idioma_id.',nivel,'.$request->nivel,
             'nivel' => 'required|numeric|min:1|max:30',
             'idioma_id' => 'required|exists:idiomas,id',
         ], [
@@ -76,7 +77,7 @@ class CicloController extends Controller
     {
         // Validar los datos de entrada
         $validatedData = $request->validate([
-            'nombre' => 'required|string|max:20|unique:ciclos,nombre,NULL,id,idioma_id,' . $request->idioma_id . ',nivel,' . $request->nivel,
+            'nombre' => 'required|string|max:20|unique:ciclos,nombre,NULL,id,idioma_id,'.$request->idioma_id.',nivel,'.$request->nivel,
             'periodo' => 'required|string|max:10',
             'nivel' => 'required|numeric|min:1|max:30',
             'idioma_id' => 'required|exists:idiomas,id',

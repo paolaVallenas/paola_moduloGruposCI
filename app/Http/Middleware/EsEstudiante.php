@@ -18,7 +18,8 @@ class EsEstudiante
     {
         if (Auth::user()->tipoUsuario === 'est') {
             return $next($request);
-        }else{
-        return redirect()->route('DUsuario');}
+        } else {
+            return redirect()->route('DUsuario');
+        }
     }
 }

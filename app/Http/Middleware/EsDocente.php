@@ -18,7 +18,8 @@ class EsDocente
     {
         if (Auth::user()->tipoUsuario === 'doc') {
             return $next($request);
-        }else{
-        return redirect()->route('DUsuario');}
+        } else {
+            return redirect()->route('DUsuario');
+        }
     }
 }

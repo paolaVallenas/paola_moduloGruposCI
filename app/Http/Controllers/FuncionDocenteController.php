@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Models\Docente;
 use App\Models\Grupo;
 use App\Models\Matricula;
-use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class FuncionDocenteController extends Controller
 {
@@ -20,19 +20,19 @@ class FuncionDocenteController extends Controller
                 ->where('user_id', Auth::id())
                 ->first();
 
-            if (!$docente) {
+            if (! $docente) {
                 return Inertia::render('Docente/VerGrupos', [
-                    'error' => 'No se encontraron datos del docente'
+                    'error' => 'No se encontraron datos del docente',
                 ]);
             }
 
             return Inertia::render('Docente/VerGrupos', [
                 'docente' => $docente,
-                'grupos' => $docente->grupos
+                'grupos' => $docente->grupos,
             ]);
         } catch (\Exception $e) {
             return Inertia::render('Docente/VerGrupos', [
-                'error' => 'Error al cargar los datos del docente: ' . $e->getMessage()
+                'error' => 'Error al cargar los datos del docente: '.$e->getMessage(),
             ]);
         }
     }
@@ -51,7 +51,7 @@ class FuncionDocenteController extends Controller
 
             return back()->with('success', 'Nota guardada correctamente')->with('matricula', $matricula);
         } catch (\Exception $e) {
-            return back()->with('error', 'Error al guardar la nota: ' . $e->getMessage());
+            return back()->with('error', 'Error al guardar la nota: '.$e->getMessage());
         }
     }
 
@@ -59,25 +59,26 @@ class FuncionDocenteController extends Controller
     {
         try {
             $grupo = Grupo::with([
-                'docente', 
-                'ciclo.idioma', 
-                'estudiantes' => function($query) use ($grupoId) {
-                    $query->with(['matricula' => function($query) use ($grupoId) {
+                'docente',
+                'ciclo.idioma',
+                'estudiantes' => function ($query) use ($grupoId) {
+                    $query->with(['matricula' => function ($query) use ($grupoId) {
                         $query->where('grupo_id', $grupoId);
                     }]);
-                }
+                },
             ])->findOrFail($grupoId);
 
             $pdf = PDF::loadView('reportes.estudiantes-grupo-docente', [
                 'grupo' => $grupo,
-                'estudiantes' => $grupo->estudiantes
+                'estudiantes' => $grupo->estudiantes,
             ]);
 
             return $pdf->download('reporte-estudiantes-'.$grupo->periodo.'.pdf');
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error al generar el reporte: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Error al generar el reporte: '.$e->getMessage()], 500);
         }
     }
+
     public function registrarAsistencias()
     {
         return Inertia::render('Docente/RegistrarAsistencias');

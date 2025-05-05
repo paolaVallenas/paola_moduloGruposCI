@@ -11,6 +11,7 @@ class Docente extends Model
 {
     /** @use HasFactory<\Database\Factories\DocenteFactory> */
     use HasFactory;
+
     protected $fillable = [
         'nombres',
         'aPaterno',
@@ -26,8 +27,6 @@ class Docente extends Model
 
     /**
      * Get the user that owns the Docente
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
