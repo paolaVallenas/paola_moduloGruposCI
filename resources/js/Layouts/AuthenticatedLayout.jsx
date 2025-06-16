@@ -24,43 +24,23 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
-                                    href={route('matricula.index')}
-                                    active={route().current('matricula.index')}
-                                >
-                                    Matriculas
-                                </NavLink>
+                                
                                 <NavLink
                                     href={route('grupo.index')}
                                     active={route().current('grupo.index')}
                                 >
                                     Grupos
                                 </NavLink>
-                                <NavLink
-                                    href={route('estadisticas.index')}
-                                    active={route().current('estadisticas.index')}
-                                >
-                                    Estadísticas
-                                </NavLink>
-                                <NavLink
-                                    href={route('usuarios.index')}
-                                    active={route().current('usuarios.index')}
-                                >
-                                    Usuarios
-                                </NavLink>
-                                <NavLink
-                                    href={route('certificados.index')}
-                                    active={route().current('certificados.index')}
-                                >
-                                    Certificaciones
-                                </NavLink>
+                                
+                                
+                            
 
                             </div>
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
                             <div className="relative ms-3">
-                                <Dropdown>
+                                {/* <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button
@@ -99,7 +79,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                             Cerrar Sesión
                                         </Dropdown.Link>
                                     </Dropdown.Content>
-                                </Dropdown>
+                                </Dropdown> */}
                             </div>
                         </div>
 
@@ -161,7 +141,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </ResponsiveNavLink>
                     </div>
 
-                    <div className="border-t border-gray-200 pb-1 pt-4">
+                    {/* <div className="border-t border-gray-200 pb-1 pt-4">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800">
                                 {user.name}
@@ -183,7 +163,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 Cerrar Sesion
                             </ResponsiveNavLink>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </nav>
 

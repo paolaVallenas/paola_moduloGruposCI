@@ -36,6 +36,11 @@ class GrupoController extends Controller
         //
     }
 
+    public function dashboard()
+{
+    return Inertia::render('Administrador/Dashboard');
+}
+
     /**
      * Store a newly created resource in storage.
      */
